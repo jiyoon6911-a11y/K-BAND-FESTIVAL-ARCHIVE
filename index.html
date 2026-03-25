@@ -14,9 +14,10 @@
             --summer-green: #22c55e;
             --ocean-blue: #3b82f6;
             --soft-white: #f8fafc;
-            --mice-gold: #c88a4e;
+            --deep-slate: #0f172a;
         }
 
+        /* ✨ Custom Cursor Styles */
         body {
             font-family: 'Pretendard', sans-serif;
             background-color: var(--soft-white);
@@ -25,14 +26,57 @@
             cursor: none;
         }
 
+        #cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--summer-green);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        #cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--summer-green);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.15s ease-out;
+            opacity: 0.5;
+        }
+
+        .cursor-hover #cursor-outline {
+            transform: scale(1.5);
+            background-color: rgba(34, 197, 94, 0.1);
+            border-color: var(--ocean-blue);
+            opacity: 0.8;
+        }
+
         .font-hand { font-family: 'Gaegu', cursive; }
 
-        /* ✨ Custom Cursor */
-        #cursor-dot { width: 8px; height: 8px; background: var(--summer-green); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; }
-        #cursor-outline { width: 40px; height: 40px; border: 2px solid var(--summer-green); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: all 0.15s ease-out; opacity: 0.5; }
-        .cursor-hover #cursor-outline { transform: scale(1.5); background: rgba(34, 197, 94, 0.1); border-color: var(--ocean-blue); }
+        /* Animation States */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
 
-        /* ✨ Roadmap Grid Styling */
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Roadmap Grid Styling */
         .roadmap-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -54,7 +98,6 @@
             min-height: 280px;
         }
 
-        /* 호버 시 LP판이 나오는 효과 */
         .vinyl-record {
             position: absolute;
             right: -60px;
@@ -62,9 +105,8 @@
             transform: translateY(-50%) rotate(0deg);
             width: 180px;
             height: 180px;
-            background: #111;
-            border-radius: 50%;
             background: radial-gradient(circle at center, #333 0%, #111 40%, #222 41%, #111 60%, #333 100%);
+            border-radius: 50%;
             border: 2px solid #333;
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: -1;
@@ -74,7 +116,7 @@
         .calendar-card:hover {
             transform: translateX(10px) translateY(-5px);
             border-color: var(--summer-green);
-            box-shadow: 20px 20px 60px #d1d9e6, -20px -20px 60px #ffffff;
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.05);
         }
 
         .calendar-card:hover .vinyl-record {
@@ -96,71 +138,256 @@
             z-index: 0;
         }
 
-        .card-content { position: relative; z-index: 10; }
+        /* Era Card Styles */
+        .era-card {
+            position: relative;
+            padding: 3.5rem;
+            background: white;
+            border-radius: 3rem;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05);
+            margin-bottom: 5rem;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
 
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .era-tag {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.6rem 2.5rem;
+            background: var(--summer-green);
+            color: white;
+            font-weight: 800;
+            border-radius: 1.5rem;
+            z-index: 10;
+        }
 
-        /* Dropdown */
-        .nav-dropdown { visibility: hidden; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
-        .nav-item:hover .nav-dropdown { visibility: visible; opacity: 1; transform: translateY(0); }
+        /* 드롭다운 애니메이션 */
+        .nav-dropdown {
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover .nav-dropdown {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ✨ AI Assistant Styling */
+        #ai-chat-response::-webkit-scrollbar { width: 6px; }
+        .loading-dots:after {
+            content: ' .';
+            animation: dots 1s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            40% { color: #22c55e; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            60% { text-shadow: .25em 0 0 #22c55e, .5em 0 0 rgba(0,0,0,0); }
+            80%, 100% { text-shadow: .25em 0 0 #22c55e, .5em 0 0 #22c55e; }
+        }
+
+        .history-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #dcfce7, #f1f5f9);
+            z-index: 0;
+        }
+        .history-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            background: #22c55e;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 0 0 6px #dcfce7;
+            z-index: 1;
+        }
+
+        .insight-card {
+            border-left: 4px solid #22c55e;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem 2.5rem 2.5rem 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05);
+        }
+
+        /* Quiz UI Styles */
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
     <div id="cursor-dot"></div>
     <div id="cursor-outline"></div>
 
+    <!-- Navigation -->
     <nav id="navbar" class="fixed w-full z-[100] transition-all duration-500 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-2xl rounded-full px-8 py-3 shadow-xl border border-white/40">
             <a href="#" class="text-2xl font-bold font-hand text-green-700 flex items-center gap-2">
                 <i class="fa-solid fa-compact-disc animate-spin-slow"></i> K-BAND ARCHIVE
             </a>
-            <div class="hidden md:flex space-x-8 font-bold text-slate-700">
-                <div class="nav-item relative px-4 py-2 group cursor-pointer">
-                    <span>아카이브 <i class="fa-solid fa-chevron-down text-[10px]"></i></span>
-                    <div class="nav-dropdown absolute top-full left-0 mt-4 w-48 bg-white rounded-2xl shadow-2xl p-2 border">
-                        <a href="#history" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition">인디 역사</a>
-                        <a href="#insight" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition">산업 분석</a>
+            
+            <div class="hidden md:flex space-x-1 font-bold text-slate-700 items-center">
+                <div class="nav-item relative px-4 py-2 group">
+                    <span class="cursor-pointer hover:text-green-600 transition flex items-center gap-1 uppercase text-xs tracking-widest">Archive <i class="fa-solid fa-chevron-down text-[10px] opacity-50 group-hover:rotate-180 transition-transform"></i></span>
+                    <div class="nav-dropdown absolute top-full left-0 mt-4 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-100 p-2 overflow-hidden">
+                        <a href="#history" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition">한국 인디 음악 역사</a>
+                        <a href="#insight" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition">산업 분석 리포트</a>
                     </div>
                 </div>
-                <div class="nav-item relative px-4 py-2 group cursor-pointer">
-                    <span>2026 가이드 <i class="fa-solid fa-chevron-down text-[10px]"></i></span>
-                    <div class="nav-dropdown absolute top-full left-0 mt-4 w-48 bg-white rounded-2xl shadow-2xl p-2 border">
-                        <a href="#calendar" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition">연간 로드맵</a>
-                        <a href="#festivals" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition">5대 메이저</a>
+
+                <div class="nav-item relative px-4 py-2 group">
+                    <span class="cursor-pointer hover:text-green-600 transition flex items-center gap-1 uppercase text-xs tracking-widest">Festival Guide <i class="fa-solid fa-chevron-down text-[10px] opacity-50 group-hover:rotate-180 transition-transform"></i></span>
+                    <div class="nav-dropdown absolute top-full left-0 mt-4 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-100 p-2 overflow-hidden">
+                        <a href="#calendar" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition">2026 연간 로드맵</a>
+                        <a href="#festivals" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition">5대 메이저 상세</a>
+                    </div>
+                </div>
+
+                <div class="nav-item relative px-4 py-2 group">
+                    <span class="cursor-pointer hover:text-green-600 transition flex items-center gap-1 uppercase text-xs tracking-widest">Interactive <i class="fa-solid fa-chevron-down text-[10px] opacity-50 group-hover:rotate-180 transition-transform"></i></span>
+                    <div class="nav-dropdown absolute top-full left-0 mt-4 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-100 p-2 overflow-hidden">
+                        <a href="#ai-assistant" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition flex items-center justify-between font-bold">✨ AI 큐레이터</a>
+                        <a href="#quiz" class="block px-4 py-3 text-sm hover:bg-green-500 hover:text-white rounded-xl transition">내 성향 찾기</a>
                     </div>
                 </div>
             </div>
-            <a href="#quiz" class="bg-green-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">내 성향 찾기</a>
+            <div class="w-10"></div>
         </div>
     </nav>
 
+    <!-- Hero Section -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden parallax-bg" style="background-image: url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80&w=2000');">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-soft-white"></div>
+        <div class="relative z-10 text-center text-white px-4 max-w-5xl">
+            <div class="reveal active">
+                <span class="inline-block px-6 py-2 bg-green-500 rounded-full text-xs font-black tracking-widest mb-8 shadow-2xl uppercase">The Complete Archive of Korea Indie & Band</span>
+                <h1 class="hero-title text-7xl md:text-[9rem] font-hand mb-6 leading-none tracking-tighter">푸르른 <span class="text-green-400">속으로</span></h1>
+                <p class="text-xl md:text-3xl font-light mb-12 font-hand">언더그라운드의 저항정신에서 글로벌 주류의 중심까지.<br>대한민국 밴드 음악의 모든 순간을 담은 압도적 아카이브입니다.</p>
+                <div class="flex flex-col md:flex-row justify-center gap-6">
+                    <a href="#history" class="px-12 py-5 bg-white text-green-900 rounded-full font-black text-xl transition-all shadow-2xl hover:scale-105 active:scale-95">역사 아카이브 탐험 <i class="fa-solid fa-arrow-right ml-2"></i></a>
+                    <a href="#festivals" class="px-12 py-5 bg-green-500/20 backdrop-blur-md border border-white/30 text-white rounded-full font-black text-xl transition-all hover:bg-white/10">5대 페스티벌 가이드</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- History Section (FULL CONTENT RESTORED) -->
+    <section id="history" class="py-32 bg-white relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row gap-20 items-end mb-32 reveal">
+                <div class="md:w-2/3">
+                    <h2 class="text-2xl font-black text-green-600 mb-6 tracking-widest uppercase">The Heritage</h2>
+                    <h3 class="text-6xl md:text-8xl font-black leading-tight mb-8">한국 인디 음악<br><span class="text-gradient">30년의 전설</span></h3>
+                </div>
+                <div class="md:w-1/3">
+                    <p class="text-slate-400 text-lg leading-relaxed border-l-4 border-green-100 pl-6 mb-8 font-light">1995년 홍대 앞 작은 클럽에서 시작된 거대한 물결의 기록입니다.</p>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="history-line"></div>
+                <!-- Era 1 -->
+                <div class="era-card reveal">
+                    <div class="era-tag">1995 - 1999 : GENESIS</div>
+                    <div class="grid lg:grid-cols-2 gap-16 items-start">
+                        <div class="space-y-6">
+                            <h4 class="text-4xl font-black text-slate-900">홍대 지하, '드럭(Drug)'과 조선 펑크</h4>
+                            <p class="text-slate-600 leading-relaxed text-lg">1995년 홍대 앞 클럽 **'드럭'**의 개업은 한국 대중음악사의 변곡점이었습니다. **크라잉넛**, **노브레인** 같은 밴드들이 등장하여 '말달리자' 신드롬을 일으키며 '인디' 정체성을 확립했습니다.</p>
+                        </div>
+                        <div class="bg-green-50 p-8 rounded-[2rem] border border-green-100 font-hand text-3xl text-green-700">"우리는 소리치기 위해 무대에 섰다."</div>
+                    </div>
+                </div>
+                <!-- Era 2 -->
+                <div class="era-card reveal">
+                    <div class="era-tag bg-blue-500">2000 - 2009 : DIVERSIFICATION</div>
+                    <div class="grid lg:grid-cols-2 gap-16 items-start">
+                        <div class="lg:order-2 space-y-6">
+                            <h4 class="text-4xl font-black text-slate-900">모던락의 서정성과 벨 에포크</h4>
+                            <p class="text-slate-600 leading-relaxed text-lg">**델리스파이스**와 **언니네 이발관**의 서정적인 선율이 주류 차트를 뒤흔들었습니다. **자우림**, **검정치마**, **브로콜리너마저**가 인디의 음악적 지평을 넓힌 풍요로운 시기입니다.</p>
+                        </div>
+                        <div class="lg:order-1 bg-blue-900 p-10 rounded-[2.5rem] text-white">델리스파이스의 '차우차우' 한 마디가 가져온 충격. 인디는 이제 라이프스타일로 진화했습니다.</div>
+                    </div>
+                </div>
+                <!-- Era 3 -->
+                <div class="era-card reveal">
+                    <div class="era-tag bg-amber-500">2010 - 2019 : RENAISSANCE</div>
+                    <div class="grid lg:grid-cols-2 gap-16 items-start">
+                        <div class="space-y-6">
+                            <h4 class="text-4xl font-black text-slate-900">장기하 현상부터 혁오까지</h4>
+                            <p class="text-slate-600 leading-relaxed text-lg">**장기하와 얼굴들**로 시작된 복고 열풍은 **혁오**의 글로벌 감각으로 이어졌습니다. 밴드 음악이 가장 트렌디한 취향의 상징이 된 시대입니다.</p>
+                        </div>
+                        <div class="bg-amber-50 p-8 rounded-[2rem] border border-amber-100 font-hand text-5xl text-amber-600">HOT-100 ERA</div>
+                    </div>
+                </div>
+                <!-- Era 4 -->
+                <div class="era-card reveal bg-slate-900 text-white">
+                    <div class="era-tag bg-white text-slate-900 shadow-none">PRESENT : NEW FRONTIER</div>
+                    <div class="grid lg:grid-cols-2 gap-16 items-center">
+                        <div class="space-y-8">
+                            <h4 class="text-5xl font-black leading-tight text-green-400 font-hand">K-BAND의 완성</h4>
+                            <p class="text-xl opacity-90 leading-relaxed">**실리카겔**의 실험성과 **데이식스**의 팬덤 파워가 결합된 현재. 밴드는 이제 글로벌 K-컬처의 주역입니다.</p>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div class="p-6 bg-white/10 rounded-2xl">#Experimental #Fandom Economy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ✨ AI Assistant Section (STRENGTHENED) -->
+    <section id="ai-assistant" class="py-32 bg-green-50 px-6 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-64 h-64 bg-green-200/20 rounded-full blur-3xl -translate-x-1/2"></div>
+        <div class="max-w-4xl mx-auto text-center reveal">
+            <h2 class="text-6xl font-hand text-green-900 mb-6">✨ AI 밴드 & 페스티벌 큐레이터</h2>
+            <p class="text-xl text-slate-600 mb-12">Gemini가 당신을 위한 <strong>최적의 페스티벌 여정</strong>을 제안합니다.</p>
+            <div class="bg-white rounded-[3.5rem] shadow-2xl p-10 border border-green-100 text-left relative z-10">
+                <div id="ai-chat-response" class="h-80 overflow-y-auto mb-8 p-8 bg-slate-50 rounded-3xl border border-slate-100 text-slate-700 leading-relaxed space-y-4">
+                    <p class="font-medium italic text-slate-400">당신의 취향을 분석하여 맞춤 밴드와 공연을 추천해 드릴게요.</p>
+                </div>
+                <div class="flex gap-4">
+                    <input type="text" id="ai-input" placeholder="좋아하는 밴드나 분위기를 입력하세요..." class="flex-grow px-8 py-5 rounded-full bg-slate-100 border-none focus:ring-2 focus:ring-green-500 outline-none font-medium shadow-inner" onkeypress="if(event.keyCode==13) askGemini()">
+                    <button onclick="askGemini()" id="ai-btn" class="bg-green-600 hover:bg-green-700 text-white px-10 py-5 rounded-full font-black transition-all shadow-lg min-w-[120px]">상담하기</button>
+                </div>
+                <p id="key-alert" class="mt-4 text-xs text-red-400 hidden text-center">⚠️ API 키가 설정되지 않았습니다. 개발자 도구(F12)에서 에러를 확인하고 코드를 수정하세요.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section (2026 유지) -->
     <section id="calendar" class="py-40 bg-slate-50 px-6 relative overflow-hidden">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-24 reveal">
-                <h2 class="text-2xl font-black text-green-500 mb-4 tracking-widest">TIMELINE</h2>
+                <h2 class="text-2xl font-black text-green-500 mb-4 tracking-widest uppercase">Timeline</h2>
                 <h3 class="text-6xl font-hand text-slate-900 mb-6">2026 페스티벌 연간 로드맵</h3>
-                <p class="text-slate-400 max-w-xl mx-auto">각 달의 카드를 탐색해보세요. 당신의 계절을 채울 특별한 밴드 사운드가 기다리고 있습니다.</p>
+                <p class="text-slate-400 max-w-xl mx-auto">당신의 계절을 채울 특별한 밴드 사운드가 기다리고 있습니다.</p>
             </div>
-
             <div class="roadmap-container">
                 <script>
                     const roadmap = [
-                        { m: '01', n: 'FIRST MUSIC STATION', desc: '새해의 시작을 알리는 뜨거운 실내 열기', tag: 'Indoor' },
-                        { m: '02', n: '원주 전국 밴드 페스티벌', desc: '지역 인디의 자존심을 보여주는 무대', tag: 'Local' },
-                        { m: '03', n: 'THE GLOW', desc: '실내 광학 아트와 밴드 사운드의 융합', tag: 'Visual' },
-                        { m: '04', n: '러브썸 페스티벌', desc: '벚꽃 잎이 흩날리는 낭만적인 피크닉', tag: 'Romantic' },
-                        { m: '05', n: 'Beautiful Mint Life', desc: '세상에서 가장 아름다운 봄날의 주말', tag: 'Spring' },
-                        { m: '06', n: 'Seoul Jazz Festival', desc: '도심 속에서 즐기는 글로벌 프리미엄 라이브', tag: 'Luxury' },
-                        { m: '07', n: 'Have A Nice Trip', desc: '여름 휴가를 대신할 강력한 해외 라인업', tag: 'Global' },
-                        { m: '08', n: '인천 펜타포트', desc: '대한민국 락 스피릿의 성지이자 자존심', tag: 'Legend' },
-                        { m: '09', n: '렛츠락 페스티벌', desc: '난지 한강공원의 시원한 강바람과 함성', tag: 'Riverside' },
-                        { m: '10', n: '부산 국제 록페', desc: '낙동강 노을 아래 터지는 압도적 에너지', tag: 'Outdoor' },
-                        { m: '11', n: 'Grand Mint Festival', desc: '가을 음악 신을 총결산하는 세련된 소풍', tag: 'Autumn' },
-                        { m: '12', n: '카운트다운 판타지', desc: '밴드와 함께 외치는 새해의 첫 순간', tag: 'NewYear' }
+                        { m: '01', n: 'FIRST MUSIC STATION', desc: '새해를 여는 뜨거운 실내 열기', tag: 'Indoor' },
+                        { m: '02', n: '원주 전국 밴드 페스티벌', desc: '지역 인디의 자존심', tag: 'Local' },
+                        { m: '03', n: 'THE GLOW', desc: '실내 광학 아트와 사운드', tag: 'Visual' },
+                        { m: '04', n: '러브썸 페스티벌', desc: '벚꽃 잎 감성 피크닉', tag: 'Romantic' },
+                        { m: '05', n: 'Beautiful Mint Life', desc: '세상에서 가장 아름다운 봄 주말', tag: 'Spring' },
+                        { m: '06', n: 'Seoul Jazz Festival', desc: '도심 속 프리미엄 라이브', tag: 'Luxury' },
+                        { m: '07', n: 'Have A Nice Trip', desc: '여름 휴가 대신 해외 라인업', tag: 'Global' },
+                        { m: '08', n: '인천 펜타포트', desc: '대한민국 락 스피릿의 성지', tag: 'Legend' },
+                        { m: '09', n: '렛츠락 페스티벌', desc: '한강의 시원한 강바람', tag: 'Riverside' },
+                        { m: '10', n: '부산 국제 록페', desc: '낙동강 노을 아래 함성', tag: 'Outdoor' },
+                        { m: '11', n: 'Grand Mint Festival', desc: '가을 음악 신 총결산', tag: 'Autumn' },
+                        { m: '12', n: '카운트다운 판타지', desc: '밴드와 맞이하는 새해', tag: 'NewYear' }
                     ];
-
                     roadmap.forEach(r => {
                         document.write(`
                             <div class="calendar-card reveal">
@@ -173,7 +400,7 @@
                                 </div>
                                 <div class="flex justify-between items-center mt-6 card-content">
                                     <span class="text-xs font-bold text-slate-300">EXPLORE MORE</span>
-                                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-green-500 group-hover:text-white transition">
+                                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
                                         <i class="fa-solid fa-arrow-right"></i>
                                     </div>
                                 </div>
@@ -185,18 +412,172 @@
         </div>
     </section>
 
-    <footer class="py-20 px-6 bg-white text-center border-t">
-        <h2 class="text-4xl font-hand text-slate-800 mb-10 leading-tight">당신의 청춘은 어떤 사운드로 기록될까요?</h2>
+    <!-- Festival Guide Section (ALL 5 MAJORS) -->
+    <section id="festivals" class="py-32 px-6 bg-slate-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-32 reveal">
+                <h2 class="text-7xl font-hand text-green-900 mb-8 underline decoration-wavy decoration-green-400">THE 5 MAJOR GUIDES</h2>
+                <p class="text-xl text-slate-500 max-w-2xl mx-auto font-light leading-relaxed">대한민국에서 가장 영향력 있는 5대 페스티벌 상세 분석입니다.</p>
+            </div>
+            <div class="space-y-48">
+                <!-- 01 Pentaport -->
+                <div class="flex flex-col lg:flex-row gap-24 items-center reveal">
+                    <div class="lg:w-1/2 group relative">
+                        <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=1000" class="rounded-[2.5rem] shadow-2xl relative z-10" alt="Pentaport">
+                        <div class="absolute -bottom-6 -right-6 bg-green-500 text-white p-8 rounded-[2rem] z-20 shadow-2xl font-black text-2xl font-hand uppercase">August Peak</div>
+                    </div>
+                    <div class="lg:w-1/2 space-y-8">
+                        <span class="text-green-600 font-black text-sm tracking-widest block">#01 INCHEON PENTAPORT</span>
+                        <h3 class="text-6xl font-black leading-tight text-slate-900">인천 펜타포트<br>락 페스티벌</h3>
+                        <p class="text-xl text-slate-500 leading-relaxed">대한민국 락의 자존심이자 성지. 강력한 사운드와 슬램, 기차놀이로 상징되는 뜨거운 에너지를 만끽하세요.</p>
+                    </div>
+                </div>
+                <!-- 02 SJF -->
+                <div class="flex flex-col lg:flex-row-reverse gap-24 items-center reveal">
+                    <div class="lg:w-1/2 group relative">
+                        <img src="https://images.unsplash.com/photo-1514525253361-b87487150eb4?auto=format&fit=crop&q=80&w=1000" class="rounded-[2.5rem] shadow-2xl relative z-10" alt="SJF">
+                        <div class="absolute -bottom-6 -right-6 bg-amber-500 text-white p-8 rounded-[2rem] z-20 shadow-2xl font-black text-2xl font-hand uppercase">June Premium</div>
+                    </div>
+                    <div class="lg:w-1/2 space-y-8 text-right">
+                        <span class="text-amber-600 font-black text-sm tracking-widest block">#02 SEOUL JAZZ FESTIVAL</span>
+                        <h3 class="text-6xl font-black leading-tight text-slate-900">서울 재즈<br>페스티벌</h3>
+                        <p class="text-xl text-slate-500 leading-relaxed">초여름 도심 속 가장 우아한 휴식. 재즈를 넘어 글로벌 팝, R&B 거장들이 참여하는 세련된 낭만의 밤.</p>
+                    </div>
+                </div>
+                <!-- 03 Busan Rock -->
+                <div class="flex flex-col lg:flex-row gap-24 items-center reveal">
+                    <div class="lg:w-1/2 group relative">
+                        <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80&w=1000" class="rounded-[2.5rem] shadow-2xl relative z-10" alt="Busan Rock">
+                        <div class="absolute -bottom-6 -right-6 bg-blue-500 text-white p-8 rounded-[2rem] z-20 shadow-2xl font-black text-2xl font-hand uppercase">October River</div>
+                    </div>
+                    <div class="lg:w-1/2 space-y-8">
+                        <span class="text-blue-600 font-black text-sm tracking-widest block">#03 BUSAN INTERNATIONAL ROCK FESTIVAL</span>
+                        <h3 class="text-6xl font-black leading-tight text-slate-900">부산 국제<br>록 페스티벌</h3>
+                        <p class="text-xl text-slate-500 leading-relaxed">낙동강변 삼락생태공원의 개방감. 국내 최장수 전통의 역사와 자유로운 아웃도어 캠핑의 조화.</p>
+                    </div>
+                </div>
+                <!-- 04 GMF -->
+                <div class="flex flex-col lg:flex-row-reverse gap-24 items-center reveal">
+                    <div class="lg:w-1/2 group relative">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&q=80&w=1000" class="rounded-[2.5rem] shadow-2xl relative z-10" alt="GMF">
+                        <div class="absolute -bottom-6 -right-6 bg-orange-500 text-white p-8 rounded-[2rem] z-20 shadow-2xl font-black text-2xl font-hand uppercase">Autumn Romance</div>
+                    </div>
+                    <div class="lg:w-1/2 space-y-8 text-right">
+                        <span class="text-orange-600 font-black text-sm tracking-widest block">#04 GRAND MINT FESTIVAL</span>
+                        <h3 class="text-6xl font-black leading-tight text-slate-900">그랜드 민트<br>페스티벌</h3>
+                        <p class="text-xl text-slate-500 leading-relaxed">가을 음악 신을 총결산하는 세련된 소풍. 인디 팝부터 신스 팝까지 밴드 음악 트렌드의 정수.</p>
+                    </div>
+                </div>
+                <!-- 05 BML -->
+                <div class="flex flex-col lg:flex-row gap-24 items-center reveal">
+                    <div class="lg:w-1/2 group relative">
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=1200" class="rounded-[2.5rem] shadow-2xl relative z-10" alt="BML">
+                        <div class="absolute -bottom-6 -right-6 bg-emerald-500 text-white p-8 rounded-[2rem] z-20 shadow-2xl font-black text-2xl font-hand uppercase">May Flowers</div>
+                    </div>
+                    <div class="lg:w-1/2 space-y-8">
+                        <span class="text-emerald-600 font-black text-sm tracking-widest block">#05 BEAUTIFUL MINT LIFE</span>
+                        <h3 class="text-6xl font-black leading-tight text-slate-900">뷰티풀 민트<br>라이프</h3>
+                        <p class="text-xl text-slate-500 leading-relaxed">꽃 피는 5월의 힐링 페스티벌. 밴드 공연과 아기자기한 이벤트가 가득한 세상에서 가장 아름다운 주말.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industry Insight Section (RESTORED) -->
+    <section id="insight" class="py-32 bg-slate-950 text-white overflow-hidden relative">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-green-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-24 reveal">
+                <h2 class="text-6xl font-hand text-green-400 mb-6 text-center uppercase tracking-widest">Industry Insight</h2>
+                <p class="text-xl text-green-100 max-w-3xl mx-auto leading-relaxed font-light">밴드 엔터테인먼트 비즈니스의 미래 가치를 분석합니다.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                <div class="insight-card bg-white/5 border-none text-white reveal"><i class="fa-solid fa-chart-line text-4xl text-green-400 mb-6"></i><h4 class="text-xl font-bold mb-4 tracking-tighter uppercase">Market Volume</h4><p class="text-slate-400 text-sm leading-relaxed">연간 티켓 판매액 약 1.3조 원 육박 전망.</p></div>
+                <div class="insight-card bg-white/5 border-none text-white reveal"><i class="fa-solid fa-microchip text-4xl text-blue-400 mb-6"></i><h4 class="text-xl font-bold mb-4 tracking-tighter uppercase">Tech-Integrated</h4><p class="text-slate-400 text-sm leading-relaxed">AI 기반 정보 제공 서비스 표준화.</p></div>
+                <div class="insight-card bg-white/5 border-none text-white reveal"><i class="fa-solid fa-recycle text-4xl text-emerald-400 mb-6"></i><h4 class="text-xl font-bold mb-4 tracking-tighter uppercase">Sustainability</h4><p class="text-slate-400 text-sm leading-relaxed">'Zero-Waste' 가치 중심 운영.</p></div>
+                <div class="insight-card bg-white/5 border-none text-white reveal"><i class="fa-solid fa-users-rays text-4xl text-amber-400 mb-6"></i><h4 class="text-xl font-bold mb-4 tracking-tighter uppercase">Fandom Economy</h4><p class="text-slate-400 text-sm leading-relaxed">밴드 서사 기반 거대 IP 팬덤 형성.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6 border-t border-slate-200 bg-white text-center">
+        <h2 class="text-5xl font-hand text-slate-800 mb-10 leading-tight underline decoration-green-400 decoration-4">당신의 청춘은 어떤 사운드로 기록될까요?</h2>
         <div class="flex justify-center space-x-12 mb-12 text-3xl">
             <a href="https://www.instagram.com/yuntack_4/" target="_blank" class="text-slate-300 hover:text-pink-500 transition"><i class="fa-brands fa-instagram"></i></a>
             <a href="https://www.youtube.com/@jithemax" target="_blank" class="text-slate-300 hover:text-red-500 transition"><i class="fa-brands fa-youtube"></i></a>
             <a href="https://blog.naver.com/jiyunnn_n" target="_blank" class="text-slate-300 hover:text-green-500 transition"><i class="fa-solid fa-blog"></i></a>
         </div>
-        <p class="text-slate-400 font-medium text-xs tracking-widest uppercase">© K-BAND FESTIVAL PORTAL. ALL RIGHTS RESERVED.</p>
+        <p class="text-slate-400 font-medium text-sm tracking-widest uppercase">© K-BAND FESTIVAL PORTAL. ALL RIGHTS RESERVED.</p>
     </footer>
 
     <script>
-        // --- Custom Cursor ---
+        // --- Gemini AI Configuration ---
+        // ⚠️ GitHub 호스팅 시 주의: 아래 apiKey 변수에 본인의 API 키를 직접 따옴표("") 안에 넣어야 작동합니다.
+        // Google AI Studio(aistudio.google.com)에서 무료로 발급 가능합니다.
+        const apiKey = "AIzaSyD_N4OYmznykvrNmYdOVi-39aK6pff7R64"; 
+
+        async function askGemini() {
+            const input = document.getElementById('ai-input');
+            const responseBox = document.getElementById('ai-chat-response');
+            const btn = document.getElementById('ai-btn');
+            const alertBox = document.getElementById('key-alert');
+            const query = input.value.trim();
+
+            if (!apiKey) {
+                alertBox.classList.remove('hidden');
+                return;
+            } else {
+                alertBox.classList.add('hidden');
+            }
+
+            if (!query) return;
+
+            input.value = "";
+            btn.disabled = true;
+            responseBox.innerHTML = `<div class="flex items-center justify-center h-full"><p class="loading-dots font-bold text-green-600 text-lg">✨ Gemini가 당신의 취향을 분석하고 있습니다</p></div>`;
+
+            const systemPrompt = `당신은 대한민국 밴드 및 인디 음악사 전문가이자 페스티벌 큐레이터입니다. 한국 인디 역사와 5대 페스티벌 정보(펜타포트, 서재페, 부산록페, GMF, BML)를 바탕으로 답변하세요. 추천 페스티벌, 아티스트, 곡을 포함하고 '음악 에디터' 톤으로 한국어로 답변하세요.`;
+
+            const fetchWithRetry = async (url, options, retries = 3, backoff = 1000) => {
+                try {
+                    const res = await fetch(url, options);
+                    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+                    return await res.json();
+                } catch (err) {
+                    if (retries <= 0) throw err;
+                    await new Promise(resolve => setTimeout(resolve, backoff));
+                    return fetchWithRetry(url, options, retries - 1, backoff * 2);
+                }
+            };
+
+            try {
+                const result = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: query }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (text) {
+                    responseBox.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-green-600">$1</strong>').replace(/\n/g, '<br>');
+                    responseBox.scrollTop = 0;
+                } else {
+                    responseBox.innerHTML = `<p class="text-slate-500">죄송합니다. 답변을 생성하지 못했습니다. 질문을 구체화해보세요!</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+                responseBox.innerHTML = `<p class="text-red-500 font-bold text-center">AI 통신 중 오류가 발생했습니다.<br><small>(API 키가 정확한지, 혹은 할당량이 초과되지 않았는지 확인하세요.)</small></p>`;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // --- Custom Cursor Logic ---
         const dot = document.getElementById('cursor-dot');
         const outline = document.getElementById('cursor-outline');
         window.addEventListener('mousemove', (e) => {
@@ -209,15 +590,53 @@
             el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
         });
 
-        // --- Scroll Reveal ---
+        // --- UI & Reveal Logic ---
         window.addEventListener('scroll', () => {
             document.querySelectorAll('.reveal').forEach(el => {
                 if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
             });
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) navbar.classList.add('py-2'); else navbar.classList.remove('py-2');
         });
         document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.reveal').forEach(el => { if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('active'); });
+            document.querySelectorAll('.reveal').forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('active');
+            });
         });
+
+        // Quiz Logic
+        let quizData = {};
+        window.quizNext = (step, val) => {
+            quizData[step - 1] = val;
+            document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${step}`).classList.add('active');
+        };
+        window.calculateResult = (lastVal) => {
+            quizData[3] = lastVal;
+            document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('quiz-result').classList.add('active');
+            const title = document.getElementById('result-title');
+            const desc = document.getElementById('result-desc');
+            const icon = document.getElementById('result-icon');
+            if (quizData[1] === 'active' && quizData[2] === 'rock') {
+                title.innerText = "인천 펜타포트 락 페스티벌";
+                desc.innerText = "강렬한 슬램과 열정이 필요한 당신에게 최고의 선택입니다!";
+                icon.innerText = "🔥";
+            } else if (quizData[3] === 'summer') {
+                title.innerText = "서울 재즈 페스티벌";
+                desc.innerText = "세련된 무드와 낭만을 즐기는 당신에게 딱입니다.";
+                icon.innerText = "🎷";
+            } else {
+                title.innerText = "그랜드 민트 페스티벌";
+                desc.innerText = "가을 소풍 같은 편안한 감성을 선호하시네요!";
+                icon.innerText = "🍂";
+            }
+        };
+        window.resetQuiz = () => {
+            quizData = {};
+            document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-1').classList.add('active');
+        };
     </script>
 </body>
 </html>
